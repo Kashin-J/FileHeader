@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Lime
 # @Date:   2013-10-28 13:39:48
-# @Last Modified by:   Lime
-# @Last Modified time: 2016-03-06 10:23:52
+# @Last Modified by:   kashin
+# @Last Modified time: 2016-12-02 20:00:49
 
 import os
 import sys
@@ -27,6 +27,8 @@ PLUGIN_PATH = os.path.join(PACKAGES_PATH, PLUGIN_NAME)
 HEADER_PATH = os.path.join(PLUGIN_PATH, 'template/header')
 BODY_PATH = os.path.join(PLUGIN_PATH, 'template/body')
 INSTALLED_PLGIN_PATH = os.path.abspath(os.path.dirname(__file__))
+DEFAULT_CUSTOM_TEMPLATE_HEADER_PATH = os.path.join(PACKAGES_PATH, 'User/FileHeader-template/header')
+DEFAULT_CUSTOM_TEMPLATE_BODY_PATH = os.path.join(PACKAGES_PATH, 'User/FileHeader-template/body')
 
 IS_ST3 = sublime.version() >= '3'
 
@@ -108,9 +110,14 @@ def get_template_part(syntax_type, part):
     if custom_template_path:
         path = os.path.abspath(os.path.expanduser(os.path.expandvars(
             os.path.join(custom_template_path, template_name))))
+    else:
+        if part == 'header' :
+            path = os.path.join(DEFAULT_CUSTOM_TEMPLATE_HEADER_PATH,template_name)
+        else:
+            path = os.path.join(DEFAULT_CUSTOM_TEMPLATE_BODY_PATH,template_name)
 
-        if os.path.exists(path) and os.path.isfile(path):
-            tmplate_path = path
+    if os.path.exists(path) and os.path.isfile(path):
+        tmplate_path = path
 
     try:
         with open(tmplate_path, 'r') as f:
